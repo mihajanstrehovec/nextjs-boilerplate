@@ -3,7 +3,7 @@ on:
   deployment_status:
 jobs:
   test:
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success' && github.event.deployment.ref == 'main'
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -61,3 +61,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
+      
+      - name: Log GitHub Event Object
+        run: |
+          echo "GitHub event object:"
+          cat $GITHUB_EVENT_PATH | jq '.'
